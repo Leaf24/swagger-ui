@@ -2,7 +2,7 @@ import React, { cloneElement } from "react"
 import PropTypes from "prop-types"
 
 //import "./topbar.less"
-import Logo from "./logo_small.svg"
+import Logo from "./ebay_logo.svg.png"
 import {parseSearch, serializeSearch} from "../../core/utils"
 
 export default class Topbar extends React.Component {
@@ -49,6 +49,11 @@ export default class Topbar extends React.Component {
     if(window && window.history && window.history.pushState) {
       window.history.replaceState(null, "", `${newUrl}?${serializeSearch(search)}`)
     }
+  }
+
+  logout = () => {
+    const logoutUrl = `${window.location.protocol}//${window.location.host}/logout`
+    window.history.pushState(null, "", logoutUrl)
   }
 
   setSelectedUrl = (selectedUrl) => {
@@ -123,6 +128,7 @@ export default class Topbar extends React.Component {
           <select id="select" disabled={isLoading} onChange={ this.onUrlSelect } value={urls[this.state.selectedIndex].url}>
             {rows}
           </select>
+          <Button className="btn modal-btn auth" onClick={ this.logout }>Logout</Button>
         </label>
       )
     }
@@ -138,6 +144,7 @@ export default class Topbar extends React.Component {
           <div className="topbar-wrapper">
             <Link>
               <img height="40" src={ Logo } alt="Swagger UI"/>
+              <span>Swagger</span>
             </Link>
             <form className="download-url-wrapper" onSubmit={formOnSubmit}>
               {control.map((el, i) => cloneElement(el, { key: i }))}
